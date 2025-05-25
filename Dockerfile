@@ -32,7 +32,7 @@ COPY package*.json ./
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 RUN npm install
 COPY . .
-ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
 CMD ["node", "index.js"]
 
 
