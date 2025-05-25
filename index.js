@@ -2,15 +2,17 @@ const puppeteer = require('puppeteer');
 const axios = require('axios');
 
 (async () => {
-  console.log("🚀 Launching browser...");
   const browser = await puppeteer.launch({
     executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium',
-    headless: true,
+    headless: 'new', // conforme au warning Puppeteer
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
   console.log("🆕 Opening new page...");
   const page = await browser.newPage();
+  await page.goto('https://example.com');
+  await page.screenshot({ path: 'example.png' });
+  await browser.close();
 
   console.log("🌐 Navigating to Hyperdash...");
   await page.goto('https://hyperdash.info/trader/0x225864ad63ba66272cd6bae3e65476a2eba48c215', {
