@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
-set -o errexit
+
+export PUPPETEER_SKIP_DOWNLOAD=true
+export CHROMIUM_PATH=$(which chromium || which chromium-browser)
 
 npm install
-
-PUPPETEER_CACHE_DIR=/opt/render/.cache/puppeteer
-mkdir -p $PUPPETEER_CACHE_DIR
-
-npx puppeteer browsers install chrome
