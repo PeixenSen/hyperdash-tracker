@@ -34,7 +34,7 @@ const axios = require('axios');
   };
 
   console.log("🚀 Sending data to Make...");
-  await axios.post('https://hook.eu2.make.com/9hu3u9iddy3gpddnre86seuhnm496', data);
+  await axios.post('https://hook.eu2.make.com/mz74inl1cnt9gmuolneicbtlshhhr48b', data);
 
   console.log("❎ Closing browser...");
   await browser.close();
