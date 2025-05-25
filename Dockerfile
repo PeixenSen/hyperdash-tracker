@@ -1,8 +1,9 @@
+# ✅ Remplace l'image "slim" par une version plus complète et stable
 FROM node:18-bullseye
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Installer les dépendances système nécessaires à Chromium
+# ✅ Installation des dépendances nécessaires à Chromium
 RUN apt-get update && apt-get install -y \
   wget \
   ca-certificates \
@@ -27,25 +28,27 @@ RUN apt-get update && apt-get install -y \
   libxrender1 \
   libx11-6 \
   libx12 \
-  --no-install-recommends \
-  && apt-get clean \
-  && rm -rf /var/lib/apt/lists/*
+  --no-install-recommends && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
 
-# Crée le dossier de travail
+# 📂 Création du dossier de travail
 WORKDIR /app
 
-# Copie les fichiers nécessaires
+# 🧾 Copier les fichiers nécessaires
 COPY package*.json ./
 
-# Empêche Puppeteer de télécharger Chromium
+# ⚠️ Empêche Puppeteer de télécharger Chromium
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 
 RUN npm install
 
 COPY . .
 
-# Utiliser le Chromium système
+# 🧭 Définir le chemin de Chromium système
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
+# ▶️ Commande de démarrage
 CMD ["node", "index.js"]
+
 
