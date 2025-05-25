@@ -23,6 +23,9 @@ WORKDIR /app
 
 # Copier les fichiers du projet
 COPY package*.json ./
+
+# Empêche Puppeteer de télécharger Chromium
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 RUN npm install
 COPY . .
 
