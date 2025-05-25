@@ -1,49 +1,55 @@
-# Image Node.js de base
+# Image Node officielle légère
 FROM node:18-slim
 
-# Installer les dépendances pour Puppeteer
-RUN apt-get update && apt-get install -y \
-    wget \
-    ca-certificates \
-    fonts-liberation \
-    libappindicator3-1 \
-    libasound2 \
-    libatk-bridge2.0-0 \
-    libatk1.0-0 \
-    libgbm1 \
-    libgtk-3-0 \
-    libnspr4 \
-    libnss3 \
-    libx11-xcb1 \
-    libxcomposite1 \
-    libxdamage1 \
-    libxrandr2 \
-    xdg-utils \
-    libxshmfence1 \
-    libxkbcommon0 \
-    libxext6 \
-    libxfixes3 \
-    libxrender1 \
-    libx11-6 \
-    libx12 \
-    --no-install-recommends && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+# Empêche les invites interactives
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Créer le dossier de l'app
+# Installation des dépendances nécessaires à Puppeteer
+RUN apt-get update && apt-get install -y \
+  wget \
+  ca-certificates \
+  fonts-liberation \
+  libappindicator3-1 \
+  libasound2 \
+  libatk-bridge2.0-0 \
+  libatk1.0-0 \
+  libgbm1 \
+  libgtk-3-0 \
+  libnspr4 \
+  libnss3 \
+  libx11-xcb1 \
+  libxcomposite1 \
+  libxdamage1 \
+  libxrandr2 \
+  xdg-utils \
+  libxshmfence1 \
+  libxkbcommon0 \
+  libxext6 \
+  libxfixes3 \
+  libxrender1 \
+  libx11-6 \
+  libx12 \
+  --no-install-recommends \
+  && rm -rf /var/lib/apt/lists/*
+
+# Création du dossier app
 WORKDIR /app
 
-# Copier les fichiers package
-COPY package.json ./
+# Copie des fichiers de config
+COPY package*.json ./
 
-# Installer les dépendances avec Puppeteer à jour
-RUN npm install puppeteer@22.8.2 --save && npm install
+# Empêche Puppeteer de télécharger Chromium (on utilise celui du système)
+ENV PUPPETEER_SKIP_DOWNLOAD=true
 
-# Copier le reste des fichiers
+# Installation des dépendances Node.js
+RUN npm install
+
+# Copie du reste de l'app
 COPY . .
 
-# Définir le chemin du Chromium installé par Puppeteer
-ENV PUPPETEER_EXECUTABLE_PATH=/app/node_modules/puppeteer/.local-chromium/linux-*/chrome-linux/chrome
+# Définit Chromium installé comme navigateur
+ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-# Lancer le script Node
+# Commande à lancer
 CMD ["node", "index.js"]
+
