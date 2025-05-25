@@ -8,22 +8,22 @@ const axios = require('axios');
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
 
-  console.log("🆕 Opening new page...");
   const page = await browser.newPage();
+
+  console.log("🧭 Opening test page...");
   await page.goto('https://example.com');
   await page.screenshot({ path: 'example.png' });
-  await browser.close();
 
-  console.log("🌐 Navigating to Hyperdash...");
-  await page.goto('https://hyperdash.info/trader/0x225864ad63ba66272cd6bae3e65476a2eba48c215', {
+  console.log("🧭 Navigating to Hyperdash...");
+  await page.goto('https://hyperdash.info/trader/0x225864ad63ba66272cdbbae3e55476a2eba48c215', {
     waitUntil: 'networkidle2',
     timeout: 60000
   });
 
-  console.log("📄 Extracting HTML...");
+  console.log("🧠 Extracting HTML...");
   const html = await page.content();
 
-  // ⚠️ À adapter plus tard avec les bons sélecteurs (actuellement fictif)
+  // 🔧 À adapter plus tard avec les bons sélecteurs (exemple fictif ci-dessous)
   const data = {
     actif: "XAU/USD",
     direction: "Long",
@@ -33,10 +33,10 @@ const axios = require('axios');
     statut: "Ouvert"
   };
 
-  console.log("📤 Sending data to Make...");
-  await axios.post('https://hook.eu2.make.com/9hu3u9iddy3gpddnre86seuhnmw496', data);
+  console.log("🚀 Sending data to Make...");
+  await axios.post('https://hook.eu2.make.com/9hu3u9iddy3gpddnre86seuhnm496', data);
 
-  console.log("🧹 Closing browser...");
+  console.log("❎ Closing browser...");
   await browser.close();
 
   console.log("✅ Done.");
