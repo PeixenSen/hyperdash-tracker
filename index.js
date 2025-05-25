@@ -3,7 +3,7 @@ const axios = require('axios');
 
 (async () => {
   const browser = await puppeteer.launch({
-    executablePath: process.env.CHROMIUM_PATH || undefined,
+    executablePath: process.env.PUPPETEER_EXECUTABLE_PATH,
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
@@ -16,7 +16,6 @@ const axios = require('axios');
 
   const html = await page.content();
 
-  // ⚠️ À adapter plus tard avec les bons sélecteurs
   const data = {
     actif: "XAU/USD",
     direction: "Long",
@@ -27,6 +26,5 @@ const axios = require('axios');
   };
 
   await browser.close();
-
   await axios.post('https://hook.eu2.make.com/9hu3u9iddy3gpddnrge86seuhmnwv496', data);
 })();
