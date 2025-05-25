@@ -1,10 +1,8 @@
-# Image Node officielle légère
-FROM node:18-slim
+FROM node:18-bullseye
 
-# Empêche les invites interactives
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Installation des dépendances nécessaires à Puppeteer
+# Installer les dépendances système nécessaires à Chromium
 RUN apt-get update && apt-get install -y \
   wget \
   ca-certificates \
@@ -30,26 +28,24 @@ RUN apt-get update && apt-get install -y \
   libx11-6 \
   libx12 \
   --no-install-recommends \
+  && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Création du dossier app
+# Crée le dossier de travail
 WORKDIR /app
 
-# Copie des fichiers de config
+# Copie les fichiers nécessaires
 COPY package*.json ./
 
-# Empêche Puppeteer de télécharger Chromium (on utilise celui du système)
+# Empêche Puppeteer de télécharger Chromium
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 
-# Installation des dépendances Node.js
 RUN npm install
 
-# Copie du reste de l'app
 COPY . .
 
-# Définit Chromium installé comme navigateur
+# Utiliser le Chromium système
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
-# Commande à lancer
 CMD ["node", "index.js"]
 
