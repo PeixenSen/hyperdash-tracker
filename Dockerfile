@@ -1,46 +1,30 @@
-FROM node:18-bullseye
+FROM node:18-slim
 
-ENV DEBIAN_FRONTEND=noninteractive
-
+# Installer Chromium
 RUN apt-get update && apt-get install -y \
-  wget \
-  ca-certificates \
-  fonts-liberation \
-  libappindicator3-1 \
-  libasound2 \
-  libatk-bridge2.0-0 \
-  libatk1.0-0 \
-  libgbm1 \
-  libgtk-3-0 \
-  libnspr4 \
-  libnss3 \
-  libx11-xcb1 \
-  libxcomposite1 \
-  libxdamage1 \
-  libxrandr2 \
-  xdg-utils \
-  libxshmfence1 \
-  libxkbcommon0 \
-  libxext6 \
-  libxfixes3 \
-  libxrender1 \
-  libx11-6 \
-  --no-install-recommends && \
-  apt-get clean && rm -rf /var/lib/apt/lists/*
+    chromium \
+    --no-install-recommends && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Répertoire de travail
 WORKDIR /app
 
+# Copier les dépendances
 COPY package*.json ./
 
+# Ne pas télécharger Chromium via Puppeteer
 ENV PUPPETEER_SKIP_DOWNLOAD=true
 
+# Installer les modules npm
 RUN npm install
 
+# Copier le reste du projet
 COPY . .
 
+# Définir le chemin du binaire Chromium
 ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
+# Lancer le script Node
 CMD ["node", "index.js"]
-
 
 
